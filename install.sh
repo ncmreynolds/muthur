@@ -25,3 +25,9 @@ pip install azure-cognitiveservices-speech pyaudio pydub elementpath
 
 # Do an installation of Beepy, to make a small noise before speaking which will alert people to the voice
 pip install beepy
+
+# Get the MUTHUR files
+
+curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthurTemplate.py --output ~/muthur/muthurTemplate.py --silent
+curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthur.service --output ~/muthur/muthur.service --silent
+curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthur.sh --output ~/muthur/muthur.sh --silent

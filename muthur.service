@@ -1,0 +1,13 @@
+[Unit]
+Description=muthur
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+ExecStart=HOMEDIRECTORY/muthur/muthur.sh
+Restart=always
+User=nick
+Group=nick
+WorkingDirectory=HOMEDIRECTORY/muthur/
+[Install]
+WantedBy=multi-user.target
