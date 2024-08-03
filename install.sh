@@ -31,3 +31,11 @@ pip install beepy
 curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthurTemplate.py --output ~/muthur/muthurTemplate.py --silent
 curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthur.service --output ~/muthur/muthur.service --silent
 curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/muthur.sh --output ~/muthur/muthur.sh --silent
+curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/configure.sh --output ~/muthur/configure.sh --silent
+
+#Make the necessary scripts executable
+chmod +x ~/muthur/muthur.sh
+chmod +x ~/muthur/configure.sh
+
+#Update the service files to reflect the user's home directory, which should be a one-time action
+sed -i "s/HOMEDIRECTORY/$HOME/g" ~/muthur/muthur.service
