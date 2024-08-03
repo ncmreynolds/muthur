@@ -16,6 +16,8 @@ Very broadly...
 
 These instructions are current as of August 2024 with Raspberry Pi OS Bookworm of that time. If a lot of time has passed and the OS has changed significantly they may need some updating please raise a GitHub issue if they cease to work.
 
+The script itself is little more than a mashing together of the Telegram and Microsoft Python examples to make a minimum viable solution.
+
 ## Prerequisites
 
 You will need...
