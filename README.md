@@ -72,7 +72,7 @@ The Raspberry Pi Foundation have a convenient installation program, the Raspberr
 
 Use the instructions [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) to install the version of Raspbian suitable for the Pi hardware you have. When you get to the 'Choose OS' step don't simply select the standard desktop installation as it's unnecessarily large. From the menu choose 'Raspberry Pi OS (other)' and then 'Raspberry Pi OS Lite (64-bit)'. Be very sure there's nothing you want to keep on the SD card you are using as it will be completely wiped.
 
-When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should also set a proper username and password which you keep a record of. It may be worth setting it up to allow SSH access as well in the Service tab, as that will allow you to connect from another computer to complete the setup.
+When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should also set a proper username and password which you keep a record of. It may be worth setting it up to allow SSH access as well in the Services tab, as that will allow you to connect from another computer to complete the setup. Needless to say don't enable SSH if you've set a stupidly weak password, just in case.
 
 The first time the Raspberry Pi starts will take a few minutes, wait for it to get to a logon screen where it is asking for your username with a prompt that says 'login:' with a flashing cursor.
 
@@ -105,11 +105,13 @@ Once you've put these in it will configure MU|TH|UR and start the services. It s
 
 If you want to reconfigure things later, for example to add another Telegram user, you can run the same command again.
 
-That's it, you should be done. If you message your bot directly or the group chat it's part of with something that has '/say ' at the start then speech should just come out of the Raspberry Pi default audio output.
+That's it, you should be done. If you message your bot directly or the group chat it's part of with something that has '/say ' at the start then speech should just come out of the Raspberry Pi default audio output. The bot will reply with 'Broadcast:' and a copy of your message once it is sent. The delay is usually only a second or two.
+
+If there are any errors from the speech generation the bot will show them in the chat. It has probed mostly reliable.
 
 ## Forcing audio out onto the jack plug
 
-Depending on if you've got an HDMI screen connected or not the default audio output may change between this and the jack plug. You can force it onto the jack plug with the following command.
+Depending on if you've got an HDMI screen connected to the Raspberry Pi or not the default audio output may change between this and the jack plug. You can force it onto the jack plug with the following command.
 
 ```
 sudo raspi-config nonint do_audio 0
@@ -160,19 +162,21 @@ You will see the following about halfway down.
 
 Press Ctrl-X when you want to quite the editor and it will ask if you would like to save your changes.
 
-There is a 'speech gallery' from [Microsoft](https://speech.microsoft.com/portal/voicegallery) here where you can see what voices are available, the one I chose is 'Cora'. If you pick a new voice you need its 'proper' name which includes a region, type etc. set as the 'name'.
+There is a 'speech gallery' from [Microsoft](https://speech.microsoft.com/portal/voicegallery) here where you can see what voices are available and play around with them. The one I chose is 'Cora'. If you pick a new voice you need its 'proper' name which includes a region, type etc. set as the 'name'.
 
-You can also change the style, pitch and rate there's some rather verbose information [here](https://www.w3.org/TR/speech-synthesis/#S3.2.4). For the default MU|TH|UR voice we slowed and lowered the pitch of voice slightly which you can see under 'prosody'.
+You can also change the style, pitch and rate and there's some rather verbose information about doing so [here](https://www.w3.org/TR/speech-synthesis/#S3.2.4). For the default MU|TH|UR voice we slowed and lowered the pitch of voice slightly which you can see under 'prosody'.
 
-Note if you change the contents of 'muthur.py' it will be overwritten any time you use 'muthur/configure.sh' to change other settings. If you want to permanently swap to the the new voice, edit the template file with the following command. It's worth keeping a note of any changes you make for comparison.
+Note if you change the contents of 'muthur.py' it will be overwritten any time you use 'muthur/configure.sh' to change other settings. If you want to permanently swap to a new voice or style, edit the template file with the following command.
 
 ```
 nano muthur/muthurTemplate.py
 ```
 
+It's worth keeping a note of any changes you make for comparison.
+
 ## Looking after the Raspberry Pi
 
-Your Raspberry Pi might be small but it is a proper computer and just yanking the power out of it while it's running may end up with it corrupting the SD card and stopping working.
+Your Raspberry Pi might be small but it is a proper computer, essentially a small server, and just yanking the power out of it while it's running may end up with it corrupting the SD card and stopping working.
 
 Ideally you should log in to it and shut it down with the command 'sudo poweroff' then give it about 60s to cleanly shut down any time you are going to power it off.
 
@@ -184,7 +188,7 @@ Use the following command  to set the SD card into this read-only mode. This whi
 sudo raspi-config nonint do_overlayfs 0
 ```
 
-Should you wish to enable changes again, for example to add another authorised user of the Telegram bot or to change which Wi-Fi network the Raspberry Pi connects to, use the following command.
+Should you wish to enable changes again, for example to add another authorised user of the Telegram bot or to change which Wi-Fi network the Raspberry Pi connects to, use the following command to set the SD card back to read-write mode.
 
 ```
 sudo raspi-config nonint do_overlayfs 1
