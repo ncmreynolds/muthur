@@ -18,13 +18,13 @@ These instructions are current as of August 2024 with Raspberry Pi OS Bookworm o
 
 You will need...
 
-- A computer supported by the Microsoft Cognitives Services Speech SDK.
-  - These instructions will from this point forward assume you are going to use a Raspberry Pi 3A+ or 3B+ as this was what was used in making the first example. Later or more powerful Raspberry Pi computers should also work, but the 3A+ is the sweet spot in the author's opinion as this task doesn't require much resource and is has a convenient audio/video out connector.
+- A Raspberry Pi supported by the Microsoft Cognitives Services Speech SDK.
+  - These instructions will from this point forward assume you are going to use a Raspberry Pi 3A+ or 3B+ as this was what was used in making the first example. Later or more powerful Raspberry Pi computers should also work, but the 3A+ is the sweet spot in the author's opinion as this task doesn't require much resource and it has a convenient audio/video out connector unlike a Zero 2W.
   - Older 32bit Raspberry Pis like the original model B or Zero are not supported as it must be a 64 bit model.
-  - Some storage for the operating system installation, on a Pi a small SD card like 16GB is perfectly sufficient.
-  - A suitable power supply for the Raspberry Pi. Modern Pi computers can suck a bit of power and are fussy about the supply voltage so I would recommend you buy an official Pi PSU at the same time as the Pi rather than using any old USB supply you have kicking around.
+  - Some storage for the operating system installation, a small SD card like 16GB is perfectly sufficient.
+  - A suitable power supply for the Raspberry Pi. Modern Pi computers can suck quite a bit of power especially at startup and are fussy about the supply voltage so I would recommend you buy an official Pi PSU at the same time as the Pi (they are not hugely expensive) rather than using any old USB supply you have kicking around. The official Pi PSU puts out a voltage at the upper rather than lower end of the acceptable range, which is why they often work better.
   - A screen and keyboard for initial setup. You will not need these later, the Pi can be run 'headless'.
-- Internet connectivity for the computer. Setting it up on a 5G connection etc. is outside the scope of these instructions we will assume you'll have some accessible Wi-Fi etc.
+- Internet connectivity for the Pi. Setting it up on a 5G connection etc. is outside the scope of these instructions we will assume you'll have some accessible Wi-Fi etc.
 - A Telegram account
 - A Microsoft Azure account. The free tier is sufficient for normal use.
 
@@ -66,9 +66,11 @@ The Raspberry Pi Foundation have a convenient installation program, the Raspberr
 
 Use the instructions [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) to install the version of Raspbian suitable for the Pi hardware you have. When you get to the 'Choose OS' step don't simply select the standard desktop installation as it's unnecessarily large. From the menu choose 'Raspberry Pi OS (other)' and then 'Raspberry Pi OS Lite (64-bit)'. Be very sure there's nothing you want to keep on the SD card you are using as it will be completely wiped.
 
-When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should also set a proper username and password which you keep a record of.
+When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should also set a proper username and password which you keep a record of. It may be worth setting it up to allow SSH access as well in the Service tab, as that will allow you to connect from another computer to complete the setup.
 
-The first time the Raspberry Pi starts will take a few minutes, wait for it to get to a logon screen where it is asking for your username with a prompt that says 'login:' with a flashing cursor. Enter your username and password and you should be in.
+The first time the Raspberry Pi starts will take a few minutes, wait for it to get to a logon screen where it is asking for your username with a prompt that says 'login:' with a flashing cursor.
+
+Enter your username and password at the keyboard and you should be in. Alternatively you can connect using an SSH program such a [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) which will make entering the long API keys **much** easier as you should be able to cut and paste them from another computer. You will need the IP address of the Raspberry Pi to connect and it will helpfully show this about 6-12 lines up from the bottom of the screen. It should say something like 'My IP address is: 192.168.1.X', use the address show on the screen to connect.
 
 Now you can install the MUTHUR components by entering the command...
 
@@ -78,22 +80,26 @@ curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/install.sh | bash
 
 ...anybody familiar with Linux will know this is a naïve and potentially dangerous way to install things. This how-to is not for people with your level of knowledge, and obviously feel free to check the very simple script in that link before running it.
 
-You will need to configure MUTHUR before anything will work, enter the command...
+This script may take ten minutes or more to complete so be patient.
+
+You will then need to configure MUTHUR before anything will work, enter the command...
 
 ```
 muthur/configure.sh
 ```
 
-...which will prompt you for the following information.
+...which will prompt you for the following information. These are horrible long strings, but make sure you get them right.
 
 - Your Telegram bot API token
 - Your list of numerical Telegram user IDs which must be separated with commas
 - Your Azure text-to-speech API key
 - Your Azure text-to-speech service region
 
-Once you've put these in it will configure MUTHUR and start the services. If you want to reconfigure things later, for example to add another user, you can run the same command again later.
+Once you've put these in it will configure MUTHUR and start the services. It should say 'muthur systemd[1]: Started muthur.service - muthur' once it is finished.
 
-That's it, you should be done. If you message your bot or the group chat with something that has '/say' at the start then it should just come out of the Raspberry Pi default audio output.
+If you want to reconfigure things later, for example to add another Telegram user, you can run the same command again.
+
+That's it, you should be done. If you message your bot or the group chat with something that has '/say' at the start then speech should just come out of the Raspberry Pi default audio output.
 
 ## Forcing audio out onto the jack plug
 
@@ -102,6 +108,29 @@ Depending on if you've got an HDMI screen connected or not this may change betwe
 ```
 sudo raspi-config nonint do_audio 0
 ```
+
+## Connecting the jack plug line out to a PMR walkie-talkie
+
+The use case I had was to feed the synthesised voice into an unmodified PMR walkie-talkie. These do not have a line in but rather a microphone connection. These two things are not compatible.
+
+To solve this I used the small attenuation/impedence/biasing circuit from the second answer [here](https://electronics.stackexchange.com/questions/620985/line-level-to-microphone-level-to-record) on StackExchange and it worked well.
+
+![](JxEAM.png)
+
+On the Raspberry Pi the A/V out connector is a 4-pole 3.5mm TRRS one which is slightly unusual. It has the following pinout. You can in principle you a 3-pole TRS connector and it shorts the composite video to ground harmlessly but I deliberately used a TRRS connector and broke it out in case I wanted to later attach a small screen.
+
+| Connector | Channel         |
+| --------- | --------------- |
+| Tip       | Left            |
+| Ring 1    | Right           |
+| Ring 2    | Ground          |
+| Shield    | Composite video |
+
+At the PMR end it was a 2.5mm TRS connector which is again unusual.
+
+The PMR was set to Vox activation at its most sensitive and it **mostly** picked up the output well. The 'bong' inserted before speech is specifically there to wake up the PMR.
+
+A future improvement would be to trigger the push-to-talk feature of the PMR from a GPIO of the Raspberry Pi as that should be more reliable.
 
 ## Customising the voice of MUTHUR
 
