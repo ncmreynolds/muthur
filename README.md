@@ -46,7 +46,7 @@ You will also need to allow the bot to join group chats and if you do '/start' a
 
 ## Setting up a Telegram Group chat
 
-You can message MUTHUR directly but you probably want to add them to a group chat so everybody has the message history. Create a normal group chat called whatever you want then add the Telegram bot account to it. When you do so you **must** add the Telegram bot account as an administrator otherwise it can't see the messages.
+You can message MU|TH|UR directly but you probably want to add them to a group chat so everybody has the message history. Create a normal group chat called whatever you want then add the Telegram bot account to it. When you do so you **must** add the Telegram bot account as an administrator otherwise it can't see the messages.
 
 ## Specifying who can send messages to the Telegram bot
 
@@ -54,15 +54,17 @@ By default anybody in the world can message a Telegram bot. This could have bad 
 
 The script on the Raspberry Pi that handles messages is set to restrict this to a set of specific accounts and you have to collect the numeric ID of every account that would like to access it.
 
-To get these IDs message https://t.me/userinfobot in Telegram with '/start' and it will tell you your ID which will be 10+ digit number. Collect these for everybody who wants to use MUTHUR.
+To get these IDs message https://t.me/userinfobot in Telegram with '/start' and it will tell you your ID which will be a 10+ digit number. Collect these for everybody who wants to use MU|TH|UR.
 
 ## Setting up the Microsoft Azure account
 
-TBC
+**Detail to-do.**
+
+Create a standard free tier Azure account and set up the Speech Service, choosing a region geographically close to you. In the dashboard it will show you your keys  and region for this service which you'll need later to configure MU|TH|UR.
 
 Beware that after 30 days on the totally free trial they will expect you to add a payment method. You can continue to use the free tier after this.
 
-## Setting up MUTHUR on the Raspberry Pi
+## Setting up MU|TH|UR on the Raspberry Pi
 
 If you're completely new to using a Raspberry Pi, look at the getting started information [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#getting-started-with-your-raspberry-pi).
 
@@ -76,7 +78,7 @@ The first time the Raspberry Pi starts will take a few minutes, wait for it to g
 
 Enter your username and password at the keyboard and you should be in. Alternatively you can connect using an SSH program such a [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) which will make entering the long API keys **much** easier as you should be able to cut and paste them from another computer. You will need the IP address of the Raspberry Pi to connect and it will helpfully show this about 6-12 lines up from the bottom of the screen. It should say something like 'My IP address is: 192.168.1.X', use the address shown on the screen to connect.
 
-Now you can install the MUTHUR components by entering the command...
+Now you can install the MU|TH|UR components by entering the command...
 
 ```
 curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/install.sh | bash
@@ -86,7 +88,7 @@ curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/install.sh | bash
 
 This script may take ten minutes or more to complete as it also updates the OS install, so please be patient.
 
-You will then need to configure MUTHUR before anything will work, enter the command...
+You will then need to configure MU|TH|UR before anything will work, enter the command...
 
 ```
 muthur/configure.sh
@@ -99,7 +101,7 @@ muthur/configure.sh
 - Your Azure text-to-speech API key
 - Your Azure text-to-speech service region
 
-Once you've put these in it will configure MUTHUR and start the services. It should say 'muthur systemd[1]: Started muthur.service - muthur' once it is finished. Every time the Pi starts the MUTHUR script will start automatically.
+Once you've put these in it will configure MU|TH|UR and start the services. It should say 'muthur systemd[1]: Started muthur.service - muthur' once it is finished. Every time the Pi starts the MU|TH|UR script will start automatically.
 
 If you want to reconfigure things later, for example to add another Telegram user, you can run the same command again.
 
@@ -136,9 +138,9 @@ The PMR was set to Vox activation at its most sensitive and it **mostly** picked
 
 A future improvement would be to trigger the push-to-talk feature of the PMR from a GPIO on the Raspberry Pi as that should be more reliable.
 
-## Customising the voice of MUTHUR
+## Customising the voice of MU|TH|UR
 
-The style of voice used by MUTHUR is possible to customise using something called SSML.
+The style of voice used by MU|TH|UR is possible to customise using something called SSML.
 
 You can open Telegram bot script and see this using the command.
 
@@ -160,7 +162,7 @@ Press Ctrl-X when you want to quite the editor and it will ask if you would like
 
 There is a 'speech gallery' from [Microsoft](https://speech.microsoft.com/portal/voicegallery) here where you can see what voices are available, the one I chose is 'Cora'. If you pick a new voice you need its 'proper' name which includes a region, type etc. set as the 'name'.
 
-You can also change the style, pitch and rate there's some rather verbose information [here](https://www.w3.org/TR/speech-synthesis/#S3.2.4). For the default MUTHUR voice we slowed and lowered the pitch of voice slightly which you can see under 'prosody'.
+You can also change the style, pitch and rate there's some rather verbose information [here](https://www.w3.org/TR/speech-synthesis/#S3.2.4). For the default MU|TH|UR voice we slowed and lowered the pitch of voice slightly which you can see under 'prosody'.
 
 Note if you change the contents of 'muthur.py' it will be overwritten any time you use 'muthur/configure.sh' to change other settings. If you want to permanently swap to the the new voice, edit the template file with the following command. It's worth keeping a note of any changes you make for comparison.
 
