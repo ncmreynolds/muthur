@@ -58,9 +58,11 @@ To get these IDs message https://t.me/userinfobot in Telegram with '/start' and 
 
 ## Setting up the Microsoft Azure account
 
-**Detail to-do.**
+Create a standard [free tier Microsoft Azure subscription](https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account) and then set up the Speech Service using this [link](https://portal.azure.com/#create/Microsoft.CognitiveServicesSpeechServices).
 
-Create a standard free tier Azure account and set up the Speech Service, choosing a region geographically close to you. In the dashboard it will show you your keys  and region for this service which you'll need later to configure MU|TH|UR.
+When prompted for a resource group, call it something sensible, for region pick one close to you and likewise the instance name isn't terribly important just keep it sensible. The free pricing tier will do for low volume use. Allow access from all networks as you'll be accessing it from the Internet not Azure itself or a private network.
+
+Once the speech instance is created, navigate to it in the [Azure Portal](https://portal.azure.com/#home) and you should have an option to copy your API keys. Take a note of these and the short name (eg. uksouth) of the region for this service as you'll need them later to configure MU|TH|UR.
 
 Beware that after 30 days on the totally free trial they will expect you to add a payment method. You can continue to use the free tier after this.
 
@@ -107,7 +109,7 @@ If you want to reconfigure things later, for example to add another Telegram use
 
 That's it, you should be done. If you message your bot directly or the group chat it's part of with something that has '/say ' at the start then speech should just come out of the Raspberry Pi default audio output. The bot will reply with 'Broadcast:' and a copy of your message once it is sent. The delay is usually only a second or two.
 
-If there are any errors from the speech generation the bot will show them in the chat. It has probed mostly reliable.
+If there are any errors from the speech generation the bot will show them in the chat. It has proved mostly reliable.
 
 ## Forcing audio out onto the jack plug
 
