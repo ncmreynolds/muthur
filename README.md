@@ -1,5 +1,7 @@
 # MU|TH|UR
-A set of instructions for making a simple Telegram bot that does text-to-speech on a Raspberry Pi. It is intended for use at LARP or other experience events where you wish to quickly type something out on your phone and have it come out of an audio system of some kind. We don't all have voice actors on tap so the next best thing is text-to-speech.
+This is a set of instructions for making a simple Telegram bot that does text-to-speech on a Raspberry Pi.
+
+It is intended for use at LARP or other experience events where you wish to quickly type something out on your phone and have it come out of an audio system of some kind. We don't all have voice actors on tap so the next best thing is text-to-speech.
 
 This was obviously inspired by the many 'sad computers who tell you bad news' in sci-fi media e.g. HAL, MU|TH|UR, Gerty and so on.
 
