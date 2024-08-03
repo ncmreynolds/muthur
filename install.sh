@@ -4,8 +4,8 @@
 #
 
 # Update all the things following a fresh OS installation
-sudo apt update
-sudo apt upgrade
+sudo apt update -y
+sudo apt upgrade -y
 sudo apt autoremove -y
 
 # Install the things needed to get going
