@@ -117,7 +117,7 @@ To solve this I used the small attenuation/impedence/biasing circuit from the se
 
 ![](JxEAM.png)
 
-On the Raspberry Pi the A/V out connector is a 4-pole 3.5mm TRRS one which is slightly unusual. It has the following pinout. You can in principle you a 3-pole TRS connector and it shorts the composite video to ground harmlessly but I deliberately used a TRRS connector and broke it out in case I wanted to later attach a small screen.
+On the Raspberry Pi the A/V out connector is a 4-pole 3.5mm TRRS one which is slightly unusual. It has the following pinout. You can in principle just use a 3-pole TRS connector and it shorts the composite video to ground harmlessly but I deliberately used a TRRS connector and broke the video out in case I wanted to later attach a small screen.
 
 | Connector | Channel         |
 | --------- | --------------- |
@@ -126,11 +126,11 @@ On the Raspberry Pi the A/V out connector is a 4-pole 3.5mm TRRS one which is sl
 | Ring 2    | Ground          |
 | Shield    | Composite video |
 
-At the PMR end it was a 2.5mm TRS connector which is again unusual.
+At the PMR end it was a 2.5mm TRS connector which is again unusual. PMRs don't have a standard connector for this but there are a couple of common types.
 
 The PMR was set to Vox activation at its most sensitive and it **mostly** picked up the output well. The 'bong' inserted before speech is specifically there to wake up the PMR.
 
-A future improvement would be to trigger the push-to-talk feature of the PMR from a GPIO of the Raspberry Pi as that should be more reliable.
+A future improvement would be to trigger the push-to-talk feature of the PMR from a GPIO on the Raspberry Pi as that should be more reliable.
 
 ## Customising the voice of MUTHUR
 
