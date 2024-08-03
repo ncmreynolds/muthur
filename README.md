@@ -42,11 +42,13 @@ You will also need to allow the bot to join group chats and if you do '/start' a
 
 ## Setting up a Telegram Group chat
 
-You can message MUTHUR directly but you probably want to add them to a group chat so everybody has the message history. Create a normal group chat called whatever you want then add the Telegram bot account to it. When you do so you **must** add the Telegram bot account as an administrator otherwise it can't see all the messages.
+You can message MUTHUR directly but you probably want to add them to a group chat so everybody has the message history. Create a normal group chat called whatever you want then add the Telegram bot account to it. When you do so you **must** add the Telegram bot account as an administrator otherwise it can't see the messages.
 
-## Setting who can send messages to the Telegram bot
+## Specifying who can send messages to the Telegram bot
 
-By default anybody in the world can message a Telegram bot. This could have bad consequences with spam and/or inappropriate messages coming in. The script that handles messages is set to restrict this to a set of specific accounts and you have to collect the numeric ID of every account that would like to access it.
+By default anybody in the world can message a Telegram bot. This could have bad consequences with spam and/or inappropriate messages coming in. 
+
+The script on the Raspberry Pi that handles messages is set to restrict this to a set of specific accounts and you have to collect the numeric ID of every account that would like to access it.
 
 To get these IDs message https://t.me/userinfobot in Telegram with '/start' and it will tell you your ID which will be 10+ digit number. Collect these for everybody who wants to use MUTHUR.
 
@@ -54,27 +56,33 @@ To get these IDs message https://t.me/userinfobot in Telegram with '/start' and 
 
 TBC
 
-## Setting up the Raspberry Pi
+Beware that after 30 days on the totally free trial they will expect you to add a payment method. You can continue to use the free tier after this.
+
+## Setting up MUTHUR on the Raspberry Pi
 
 If you're completely new to using a Raspberry Pi, look at the getting started information [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#getting-started-with-your-raspberry-pi).
 
 The Raspberry Pi Foundation have a convenient installation program, the Raspberry Pi Imager, which you can [download](https://www.raspberrypi.com/software/) to install the operating system Raspbian to your SD card.
 
-Use the instructions [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) to install the version of Raspbian suitable for the Pi hardware you have. When you get to the 'Choose OS' step don't simply select the standard desktop installation. From the menu choose 'Raspberry Pi OS (other)' and then 'Raspberry Pi OS Lite (64-bit)'. Be very sure there's nothing on the SD card you are using as it will be completely wiped.
+Use the instructions [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) to install the version of Raspbian suitable for the Pi hardware you have. When you get to the 'Choose OS' step don't simply select the standard desktop installation as it's unnecessarily large. From the menu choose 'Raspberry Pi OS (other)' and then 'Raspberry Pi OS Lite (64-bit)'. Be very sure there's nothing you want to keep on the SD card you are using as it will be completely wiped.
 
-When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should set a proper username and password.
+When offered the choice to customise the OS settings be sure to do so, as outlined [here](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options). You will need the Raspberry Pi to have Internet access so connect it to your Wi-Fi and you should also set a proper username and password which you keep a record of.
 
 The first time the Raspberry Pi starts will take a few minutes, wait for it to get to a logon screen where it is asking for your username with a prompt that says 'login:' with a flashing cursor. Enter your username and password and you should be in.
 
 Now you can install the MUTHUR components by entering the command...
 
-'curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/install.sh | bash'
+```
+curl https://raw.githubusercontent.com/ncmreynolds/muthur/main/install.sh | bash
+```
 
 ...anybody familiar with Linux will know this is a naïve and potentially dangerous way to install things. This how-to is not for people with your level of knowledge, and obviously feel free to check the very simple script in that link before running it.
 
 You will need to configure MUTHUR before anything will work, enter the command...
 
-'muthur/configure.sh'
+```
+muthur/configure.sh
+```
 
 ...which will prompt you for the following information.
 
@@ -83,5 +91,70 @@ You will need to configure MUTHUR before anything will work, enter the command..
 - Your Azure text-to-speech API key
 - Your Azure text-to-speech service region
 
-Once you've put these in it will configure MUTHUR and start the services. If you want to reconfigure things later, for example to add another user, you can do it again later.
+Once you've put these in it will configure MUTHUR and start the services. If you want to reconfigure things later, for example to add another user, you can run the same command again later.
 
+That's it, you should be done. If you message your bot or the group chat with something that has '/say' at the start then it should just come out of the Raspberry Pi default audio output.
+
+## Forcing audio out onto the jack plug
+
+Depending on if you've got an HDMI screen connected or not this may change between this and the jack plug. you can force it onto the jack plug with the following command.
+
+```
+sudo raspi-config nonint do_audio 0
+```
+
+## Customising the voice of MUTHUR
+
+The style of voice used by MUTHUR is possible to customise using something called SSML.
+
+You can open Telegram bot script and see this using the command.
+
+```
+nano muthur/muthur.py
+```
+
+You will see the following about halfway down.
+
+    ssml = "<speak version='1.0' xml:lang='en-US' xmlns='http://www.w3.org/2001/10/synthesis' " \
+        "xmlns:mstts='http://www.w3.org/2001/mstts'>" \
+        "<voice name=\"en-US-CoraNeural\">" \
+        "<mstts:express-as style=\"sad\" styledegree=\"2\">" \
+        "<prosody rate=\"-10%\" pitch=\"-5%\">" \
+        + ' '.join(context.args) + \
+        "</prosody></mstts:express-as></voice></speak>"
+
+Press Ctrl-X when you want to quite the editor and it will ask if you would like to save your changes.
+
+There is a 'speech gallery' from [Microsoft](https://speech.microsoft.com/portal/voicegallery) here where you can see what voices are available, the one I chose is 'Cora'. If you pick a new voice you need its 'proper' name which includes a region, type etc.
+
+You can also change the style, pitch and rate there's some rather verbose information [here](https://www.w3.org/TR/speech-synthesis/#S3.2.4). For the default MUTHUR voice we slowed and lowered the voice slightly.
+
+Note if you change the contents of 'muthur.py' it will be overwritten any time you use 'muthur/configure.sh' to change other settings. If you want to permanently swap to the the new voice, edit the template file with. It's worth keeping a note of any changes you make for comparison.
+
+```
+nano muthur/muthurTemplate.py
+```
+
+## Looking after the Raspberry Pi
+
+Your Raspberry Pi might be small but it is a proper computer and just yanking the power out of it while it's running may end up with it corrupting the SD card and stopping working.
+
+Ideally you should log in to it and shut it down with the command 'sudo poweroff' then give it about 60s to cleanly shut down any time you are going to power it off.
+
+Once you have the Pi working just how you want you can set it so the the files on the SD card become read-only with all changes being lost between uses. It helps prevent corruption of the SD card but may not completely prevent it.
+
+Use the following command  to set it into this read-only mode. This while take a while and the Raspberry Pi will reboot after you do this.
+
+```
+sudo raspi-config nonint do_overlayfs 0
+```
+
+Should you wish to enable changes again, for example to add another authorised user of the Telegram bot or to change which Wi-Fi it connects to, use the following command.
+
+```
+sudo raspi-config nonint do_overlayfs 1
+```
+
+### Adding a shutdown button
+
+TBC
