@@ -45,4 +45,5 @@ chmod +x ~/muthur/configure.sh
 
 #Update the service files to reflect the user's home directory, which should be a one-time action using hashes to separate as the path will have a /
 sed -i "s#HOMEDIRECTORY#$HOME#g" ~/muthur/muthur.service
+sed -i "s#HOMEDIRECTORY#$HOME#g" ~/muthur/muthur.sh
 echo Done
